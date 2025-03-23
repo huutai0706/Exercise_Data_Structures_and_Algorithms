@@ -21,21 +21,20 @@ void scanf_arr(int a[], int n){
 }
 
 int main() {
-    int* a = new int;
-    cout <<"enter n: ";
     int n; cin >> n;
+    int* a = new int[n];
     scanf_arr(a, n);
-    if(a[n-1] > a[0]){
+    if(a[n-1] >= a[0]){
         if (check_sort_Increasing(a, n)) {
-            cout << "arrays have been arranged" << endl; 
+            cout << "Array is sorted in increasing order" << endl; 
         } else {
-            cout << "Arrays Not Aligned" << endl;  
+            cout << "Array is not sorted in increasing order" << endl;  
         }
     }else{
         if (check_sort_Descending(a, n)) {
-            cout << "arrays have been arranged" << endl; 
+            cout << "Array is sorted in decreasing order" << endl; 
         } else {
-            cout << "Arrays Not Aligned" << endl;  
+            cout << "Array is not sorted in decreasing order" << endl;  
         }
     }
     delete[] a;

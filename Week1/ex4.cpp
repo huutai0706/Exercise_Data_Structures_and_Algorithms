@@ -12,7 +12,6 @@ void Tower_Of_Hanoi(int n, char cot_dau, char cot_giua, char cot_dich) {
 }
 int main() {
     int n;
-    cout << "Nhap so luong dia: ";
     cin >> n;
     Tower_Of_Hanoi(n, 'A', 'C', 'B'); 
     return 0;
