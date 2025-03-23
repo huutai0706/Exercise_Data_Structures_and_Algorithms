@@ -1,19 +1,19 @@
 #include <iostream>
 using namespace std;
 
-void TowerOfHanoi(int n, char from_peg, char to_peg, char aux_peg) {
+void Tower_Of_Hanoi(int n, char cot_dau, char cot_giua, char cot_dich) {
     if (n == 1) {
-        cout << "Di chuyrn dia 1 tu " << from_peg << " den " << to_peg << endl;
+        cout << "Di chuyen dia 1 tu " << cot_dau << " den " << cot_giua << endl;
         return;
     }
-    TowerOfHanoi(n-1, from_peg, aux_peg, to_peg);
-    cout << "Di chuyen dia " << n << " tu " << from_peg << " den " << to_peg << endl;
-    TowerOfHanoi(n-1, aux_peg, to_peg, from_peg);
+    Tower_Of_Hanoi(n-1, cot_dau, cot_dich, cot_giua);
+    cout << "Di chuyen dia " << n << " tu " << cot_dau << " den " << cot_giua << endl;
+    Tower_Of_Hanoi(n-1, cot_dich, cot_giua, cot_dau);
 }
 int main() {
     int n;
     cout << "Nhap so luong dia: ";
     cin >> n;
-    TowerOfHanoi(n, 'A', 'C', 'B'); 
+    Tower_Of_Hanoi(n, 'A', 'C', 'B'); 
     return 0;
 }
