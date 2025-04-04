@@ -15,7 +15,7 @@
 *.so
 *.dylib
 *.dll
-
+*.zip
 # Fortran module files
 *.mod
 *.smod
@@ -30,3 +30,4 @@
 *.exe
 *.out
 *.app
+*.txt
