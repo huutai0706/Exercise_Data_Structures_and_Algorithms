@@ -2,17 +2,16 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include <chrono>
 #include "algorithm.h"
+#include <iomanip>
 
-using namespace chrono;
 using namespace std;
 
 // Hàm đọc dữ liệu từ file vào vector
-void read_file(const string& filename, vector<int>& data) {
-    ifstream file(filename);
+void read_file(const string& name_file, vector<int>& data) {
+    ifstream file(name_file);
     if (!file.is_open()) {
-        cerr << "Khong the mo file: " << filename << "!!!\n" << endl;
+        cerr << "Khong the mo file: " << name_file << "!!!\n" << endl;
         exit(1);
     }
     int num;
@@ -23,10 +22,10 @@ void read_file(const string& filename, vector<int>& data) {
 }
 
 // Hàm ghi dữ liệu từ vector vào file
-void write_file(const string& filename, const vector<int>& data) {
-    ofstream file(filename);
+void write_file(const string& name_file, const vector<int>& data) {
+    ofstream file(name_file);
     if (!file) {
-        cerr << "Khong the mo file: " << filename << "!!!\n" << endl;
+        cerr << "Khong the mo file: " << name_file << "!!!\n" << endl;
         exit(1);
     }
     for (int num : data) {
@@ -36,10 +35,10 @@ void write_file(const string& filename, const vector<int>& data) {
 }
 
 int main(int argc, char* argv[]) {
+
     string algorithm, ip, op;
     vector<int> data;
-
-    // Kiểm tra nếu số lượng tham số không đủ
+    
     if (argc < 7) {
         cerr << "Cach su dung: " << argv[0] << " -a <ten thuat toan> -i <file input> -o <file output>" << endl;
         return 1;
@@ -69,8 +68,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    auto start = high_resolution_clock::now(); // Bắt đầu đo thời gian
-
     // Chọn thuật toán sắp xếp
     if (algorithm == "selection_sort") {
         selection_sort(data);
@@ -84,20 +81,23 @@ int main(int argc, char* argv[]) {
         counting_sort(data);
     } else if (algorithm == "flash_sort") {
         flash_sort(data);
+    } else if (algorithm == "insertion_sort") {
+        insertion_sort(data);
+    } else if (algorithm == "shaker_sort") {
+        shaker_sort(data);
+    } else if (algorithm == "heap_sort") {
+        heap_sort(data);
+    } else if (algorithm == "quick_sort") {
+        quick_sort(data, 0, data.size()- 1);
+    } else if (algorithm == "radix_sort") {
+        radix_sort(data);
     } else {
         cerr << "Thuat toan khong hop le!" << endl;
         return 1;
     }
 
-    auto end = high_resolution_clock::now(); // Kết thúc đo thời gian
-
-    // Tính toán thời gian chạy
-    auto duration = duration_cast<milliseconds>(end - start);
-
-    // Ghi kết quả ra file đầu ra
+    // Ghi kết quả vào file
     write_file(op, data);
-
-    cout << "\nDa sap xep xong, luu vao file " << op << endl;
-    cout << "\nThoi gian chay thuat toan " << algorithm << " la: " << duration.count() << " mili giay!\n\n"; 
+    cout << "\nDa sap xep xong, luu vao file " << op << "\n" <<endl;
     return 0;
 }

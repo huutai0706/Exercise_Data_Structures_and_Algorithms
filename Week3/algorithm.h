@@ -1,4 +1,3 @@
-#pragma
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -8,21 +7,18 @@ using namespace std;
 
 //Thuật toán bubble sort
 void bubble_sort(vector<int>& a) {
-    long long count = 0;
     int n = a.size();
     bool swapped;
     for (int i = 0; i < n - 1; i++) { 
         swapped = false;
         for (int j = 0; j < n - i - 1; j++) { 
-            count++;
             if (a[j] > a[j + 1]) {
                 swap(a[j], a[j + 1]);
                 swapped = true;
             }
         }
-        if (!swapped) break;
+        if (!swapped) break; 
     }
-    cout << "\nSo phep so sanh cua bubble sort: " << count << " lan\n";
 }
 
 
@@ -31,11 +27,9 @@ void bubble_sort(vector<int>& a) {
 //Thuật toán selection sort
 void selection_sort(vector<int>& a) {
     int n = a.size();
-    long long count = 0;
     for (int i = 0; i < n - 1; i++) {
         int min = i;
         for (int j = i + 1; j < n; j++) {
-            count++;
             if (a[j] < a[min]) {
                 min = j;
             }
@@ -44,7 +38,6 @@ void selection_sort(vector<int>& a) {
             swap(a[i], a[min]);
         }
     }
-    cout << "\nSo phep so sanh cua selection sort: " << count << " lan\n";
 }
 
 
@@ -53,35 +46,27 @@ void selection_sort(vector<int>& a) {
 //Thuật toán shell sort
 void shell_sort(vector<int>& a) {
     int n = a.size();
-    long long count = 0;
-    for (int gap = n / 2; gap > 0; gap /= 2) {
+    for (int gap = n / 2; gap > 0; gap /= 2) { 
         for (int i = gap; i < n; i++) {
             int temp = a[i];
             int j = i;
             while (j >= gap && a[j - gap] > temp) {
-                count++; 
                 a[j] = a[j - gap];
                 j -= gap;
             }
-            count++; // Đếm so sánh cuối cùng khi vòng lặp dừng lại
             a[j] = temp;
         }
     }
-    cout << "\nSo phep so sanh cua shell sort: " << count << " lan\n";
 }
-
 
 
 /*---------------------------------------------------------------------*/
 
-
 //Thuật toán counting sort
 void counting_sort(vector<int>& a) {
     if (a.empty()) return;
-    long long count_S = 0;
-
-    int max_a = *max_element(a.begin(), a.end());
-    vector<int> count(max_a + 1, 0);
+    int max_a = *max_element(a.begin(), a.end());  
+    vector<int> count(max_a + 1, 0); 
 
     for (int num : a) {
         count[num]++;
@@ -90,30 +75,27 @@ void counting_sort(vector<int>& a) {
     int index = 0;
     for (int i = 0; i <= max_a; i++) {
         while (count[i] > 0) {
-            count_S++;
             a[index++] = i;
             count[i]--;
         }
     }
-    cout << "\nSo lan thuc hien phep so sanh cua counting sort: " << count_S << " lan\n";
 }
-
 
 /*---------------------------------------------------------------------*/
 
-int count_merge = 0;
-
+//Thuật toán merge sort
 void merge(vector<int>& a, int left, int mid, int right) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
     vector<int> l(n1), r(n2);
     
-    for (int i = 0; i < n1; i++) l[i] = a[left + i];
-    for (int i = 0; i < n2; i++) r[i] = a[mid + 1 + i];
+    for (int i = 0; i < n1; i++) 
+        l[i] = a[left + i]; 
+    for (int i = 0; i < n2; i++) 
+        r[i] = a[mid + 1 + i]; 
 
     int i = 0, j = 0, k = left;
     while (i < n1 && j < n2) {
-        count_merge++;
         if (l[i] <= r[j]) {
             a[k] = l[i++];
         } else {
@@ -135,60 +117,50 @@ void merge_sort(vector<int>& a, int left, int right) {
     }
 }
 
-void print_merge_comparisons() {
-    cout << "\nSo lan thuc hien phep so sanh cua merge sort: " << count_merge << " lan\n";
-}
-
-
-
-
 
 /*---------------------------------------------------------------------*/
 
 //Thuật toán flash sort
-void flash_sort(vector<int>& a){
+void flash_sort(vector<int>& a) {
     int n = a.size();
+
     if (n <= 1) return;
 
-    // 1️⃣ Tìm giá trị min và max
-    int min_value = a[0], max_index = 0;
+    int min_arr = a[0], max_i = 0;
     for (int i = 1; i < n; i++) {
-        if (a[i] < min_value) min_value = a[i];
-        if (a[i] > a[max_index]) max_index = i;
+        if (a[i] < min_arr) min_arr = a[i];
+        if (a[i] > a[max_i]) max_i = i;
     }
-    if (a[max_index] == min_value) return; // Nếu tất cả phần tử giống nhau
+    if (a[max_i] == min_arr) return;
 
-    // 2️⃣ Chia mảng thành nhóm (Lớp)
-    int m = int(0.45 * n);  // Số nhóm tối ưu (thường bằng 45% số phần tử)
+    int m = int(0.45 * n); 
     vector<int> L(m, 0);
-    double scale = (double)(m - 1) / (a[max_index] - min_value);
+    double scale = (double)(m - 1) / (a[max_i] - min_arr);
 
-    // 3️⃣ Xác định số phần tử trong mỗi nhóm
     for (int i = 0; i < n; i++) {
-        int index = scale * (a[i] - min_value);
+        int index = scale * (a[i] - min_arr); 
         L[index]++;
     }
 
-    // 4️⃣ Tính vị trí bắt đầu của mỗi nhóm
     for (int i = 1; i < m; i++) {
         L[i] += L[i - 1];
     }
 
-    // 5️⃣ Hoán đổi phần tử vào đúng vị trí
     int i = 0, count = 0;
     while (count < n) {
-        int index = scale * (a[i] - min_value);
-        while (i >= L[index]) index = scale * (a[++i] - min_value);
-        
+        int index = scale * (a[i] - min_arr);
+        while (i >= L[index]) {
+            index = scale * (a[++i] - min_arr);
+        }
+
         int temp = a[i];
         while (i != L[index]) {
-            index = scale * (temp - min_value);
+            index = scale * (temp - min_arr);
             swap(temp, a[--L[index]]);
             count++;
         }
     }
 
-    // 6️⃣ Dùng Insertion Sort để hoàn tất sắp xếp
     for (int i = 1; i < n; i++) {
         int key = a[i];
         int j = i - 1;
@@ -201,12 +173,133 @@ void flash_sort(vector<int>& a){
 }
 
 /*---------------------------------------------------------------------*/
+
+
+void insertion_sort(vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+
 /*---------------------------------------------------------------------*/
+
+void shaker_sort(vector<int>& arr) {
+    int n = arr.size();
+    int left = 0;      
+    int right = n - 1;   
+    int temp;            
+
+    while (left < right) {
+        for (int i = left; i < right; i++) {
+            if (arr[i] > arr[i + 1]) {
+                temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+            }
+        }
+        right--;
+
+        for (int i = right; i > left; i--) {
+            if (arr[i] < arr[i - 1]) {
+                temp = arr[i];
+                arr[i] = arr[i - 1];
+                arr[i - 1] = temp;
+            }
+        }
+        left++;
+    }
+}
+
 /*---------------------------------------------------------------------*/
+
+void Heapify(vector<int>& arr, int n, int i) {
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+
+    if (largest != i) {
+        swap(arr[i], arr[largest]);
+        Heapify(arr, n, largest);
+    }
+}
+
+void heap_sort(vector<int>& arr) {
+    int n = arr.size();
+
+    for (int i = n / 2 - 1; i >= 0; i--)
+        Heapify(arr, n, i);
+
+    for (int i = n - 1; i >= 1; i--) {
+        swap(arr[0], arr[i]);       
+        Heapify(arr, i, 0);          
+    }
+}
+
 /*---------------------------------------------------------------------*/
+
+void quick_sort(vector<int>& arr, int low, int high) {
+    if (low < high) {
+        int pivot = arr[high];
+        int i = (low - 1);
+        for (int j = low; j < high; j++) {
+            if (arr[j] < pivot) {
+                i++;
+                swap(arr[i], arr[j]);
+            }
+        }
+
+        swap(arr[i + 1], arr[high]);
+        int pi = i + 1;
+
+        quick_sort(arr, low, pi - 1);
+        quick_sort(arr, pi + 1, high);
+    }
+}
+
 /*---------------------------------------------------------------------*/
-/*---------------------------------------------------------------------*/
-/*---------------------------------------------------------------------*/
-/*---------------------------------------------------------------------*/
-/*---------------------------------------------------------------------*/
+
+void radix_sort(vector<int>& arr) {
+    int n = arr.size();
+    if (n <= 1) return; 
+
+    int max_val = *max_element(arr.begin(), arr.end());
+
+    for (int exp = 1; max_val / exp > 0; exp *= 10) {
+        vector<int> output(n);
+        int count[10] = {0};
+
+        for (int i = 0; i < n; i++) {
+            count[(arr[i] / exp) % 10]++;
+        }
+
+        for (int i = 1; i < 10; i++) {
+            count[i] += count[i - 1];
+        }
+
+        for (int i = n - 1; i >= 0; i--) {
+            int digit = (arr[i] / exp) % 10;
+            output[count[digit] - 1] = arr[i];
+            count[digit]--;
+        }
+
+        for (int i = 0; i < n; i++) {
+            arr[i] = output[i];
+        }
+    }
+}
+
+
 /*---------------------------------------------------------------------*/
