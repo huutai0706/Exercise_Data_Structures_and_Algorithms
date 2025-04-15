@@ -13,7 +13,7 @@ struct List {
     Node* pTail;
 };
 
-// 1. Tạo một nút mới với giá trị data
+// Tạo một nút mới với giá trị data
 Node* createNode(int data) {
     Node* newNode = new Node;
     if (!newNode) return nullptr;
@@ -23,19 +23,19 @@ Node* createNode(int data) {
     return newNode;
 }
 
-// 2. Khởi tạo danh sách rỗng
+//Khởi tạo danh sách rỗng
 void initList(List& list) {
     list.pHead = nullptr;
     list.pTail = nullptr;
 }
 
-// 3. Kiểm tra danh sách rỗng
+// Kiểm tra danh sách rỗng
 bool isEmpty(const List& list) {
     return list.pHead == nullptr;
 }
 
-// 4. Thêm nút vào đầu danh sách
-void insertHead(List& list, int data) {
+// Thêm nút vào đầu danh sách
+void createHead(List& list, int data) {
     Node* newNode = createNode(data);
     if (!newNode) return;
 
@@ -48,8 +48,8 @@ void insertHead(List& list, int data) {
     }
 }
 
-// 5. Thêm nút vào cuối danh sách
-void insertTail(List& list, int data) {
+// Thêm nút vào cuối danh sách
+void createTail(List& list, int data) {
     Node* newNode = createNode(data);
     if (!newNode) return;
 
@@ -62,8 +62,8 @@ void insertTail(List& list, int data) {
     }
 }
 
-// 6. Xóa nút đầu tiên
-void deleteHead(List& list) {
+// Xóa nút đầu tiên
+void removeHead(List& list) {
     if (isEmpty(list)) return;
 
     Node* temp = list.pHead;
@@ -78,8 +78,8 @@ void deleteHead(List& list) {
     delete temp;
 }
 
-// 7. Xóa nút cuối cùng
-void deleteTail(List& list) {
+// Xóa nút cuối cùng
+void removeTail(List& list) {
     if (isEmpty(list)) return;
 
     Node* temp = list.pTail;
@@ -94,8 +94,8 @@ void deleteTail(List& list) {
     delete temp;
 }
 
-// 8. Xóa nút có giá trị key
-void deleteKey(List& list, int key) {
+// Xóa nút có giá trị key
+void removeKey(List& list, int key) {
     Node* current = list.pHead;
 
     while (current != nullptr && current->key != key) {
@@ -105,12 +105,12 @@ void deleteKey(List& list, int key) {
     if (current == nullptr) return; // Không tìm thấy
 
     if (current == list.pHead) {
-        deleteHead(list);
+        removeHead(list);
         return;
     }
 
     if (current == list.pTail) {
-        deleteTail(list);
+        removeTail(list);
         return;
     }
 
@@ -119,7 +119,7 @@ void deleteKey(List& list, int key) {
     delete current;
 }
 
-// 9. Tìm kiếm nút có giá trị key
+// Tìm kiếm nút có giá trị key
 Node* searchKey(const List& list, int key) {
     Node* current = list.pHead;
     while (current != nullptr) {
@@ -129,8 +129,8 @@ Node* searchKey(const List& list, int key) {
     return nullptr;
 }
 
-// 10. Duyệt danh sách từ đầu đến cuối
-void printListForward(const List& list) {
+// Duyệt danh sách từ đầu đến cuối
+void printListHeadtoTail(const List& list) {
     if (isEmpty(list)) {
         cout << "Danh sach rong\n";
         return;
@@ -144,8 +144,8 @@ void printListForward(const List& list) {
     cout << endl;
 }
 
-// 11. Duyệt danh sách từ cuối về đầu
-void printListBackward(const List& list) {
+// Duyệt danh sách từ cuối về đầu
+void printListTailtoHead(const List& list) {
     if (isEmpty(list)) {
         cout << "Danh sach rong\n";
         return;
@@ -159,52 +159,202 @@ void printListBackward(const List& list) {
     cout << endl;
 }
 
-// 12. Giải phóng bộ nhớ danh sách
+// Giải phóng bộ nhớ danh sách
 void freeList(List& list) {
     while (!isEmpty(list)) {
-        deleteHead(list);
+        removeHead(list);
     }
 }
 
-// Hàm main để thử nghiệm
-int main() {
-    List list;
-    initList(list);
-
-    // Tạo danh sách mẫu: 5 -> 10 -> 15 -> 20
-    insertTail(list, 5);
-    insertTail(list, 10);
-    insertTail(list, 15);
-    insertTail(list, 20);
-
-    cout << "Danh sach tu dau den cuoi: ";
-    printListForward(list); // Output: 5 10 15 20
-
-    cout << "Danh sach tu cuoi ve dau: ";
-    printListBackward(list); // Output: 20 15 10 5
-
-    // Thêm 0 vào đầu
-    insertHead(list, 0);
-    cout << "Sau khi them 0 vao dau: ";
-    printListForward(list); // Output: 0 5 10 15 20
-
-    // Xóa phần tử 10
-    deleteKey(list, 10);
-    cout << "Sau khi xoa 10: ";
-    printListForward(list); // Output: 0 5 15 20
-
-    // Tìm kiếm phần tử 15
-    Node* found = searchKey(list, 15);
-    if (found) {
-        cout << "Tim thay phan tu co gia tri 15\n";
-    } else {
-        cout << "Khong tim thay phan tu co gia tri 15\n";
+void removeBefore(List& list, int val){
+    if(isEmpty(list)){
+        cout <<"Danh sach rong\n";
+        return;
     }
+    Node* curr = list.pHead;
+    while(curr != nullptr && curr->key == val){
+        curr = curr->next;
+    }
+    if(curr == nullptr || curr ->prev == nullptr){
+        return;
+    }
+    Node* toDelete = curr->prev;
 
-    // Giải phóng danh sách
-    freeList(list);
-    cout << "Sau khi giai phong: ";
-    printListForward(list); // Output: Danh sach rong
+    if(toDelete->prev != nullptr){
+        toDelete->prev->next = curr;
+        curr->prev = toDelete->prev;
+    } else{
+        curr->prev = nullptr;
+        list.pHead = curr;
+    }
+    delete toDelete;
+    return;
+}
 
-    return 0;
+void removeAfter(List& l, int val){
+    if(isEmpty(l)){
+        cout <<"Danh sach rong\n";
+        return;
+    }
+    Node* curr = l.pHead;   
+    while(curr != nullptr && curr->key != val){
+        curr = curr->next;
+    }
+    if(curr == nullptr || curr->next == nullptr){
+        return;
+    }
+    Node* toDelete = curr->next;
+    
+    if(toDelete->next != nullptr){
+        toDelete->next->prev = curr;
+        curr->next = toDelete->next;
+    } else {
+        curr->next = nullptr;
+        l.pTail = curr;
+    }
+    delete toDelete;
+    return;
+}
+ // Thêm nút tại vị trí pos
+void addPos(List& l, int data, int val){
+    if(isEmpty(l)){
+        cout <<"Danh sach rong\n";
+        return;
+    }
+    Node* curr = l.pHead;
+    while(curr != nullptr && curr->key != val){
+        curr = curr->next;
+    }
+    if(curr == nullptr){
+        return;
+    }
+    Node* newNode = createNode(data);
+    newNode->next = curr->next;
+    newNode->prev = curr;
+    
+    if(curr->next != nullptr){
+        curr->next->prev = newNode;
+    } else {
+        l.pTail = newNode;
+    }
+    curr->next = newNode;
+}
+
+// Xóa nút tại vị trí pos
+void removePos(List& l, int pos){
+    if(isEmpty(l)){
+        cout <<"Danh sach rong\n";
+        return;
+    }
+    Node* curr = l.pHead;
+    for(int i = 0; i < pos && curr != nullptr; i++){
+        curr = curr->next;
+    }
+    if(curr == nullptr){
+        return;
+    }
+    if(curr->prev != nullptr){
+        curr->prev->next = curr->next;
+    } else {
+        l.pHead = curr->next;
+    }
+    if(curr->next != nullptr){
+        curr->next->prev = curr->prev;
+    } else {
+        l.pTail = curr->prev;
+    }
+    delete curr;
+}
+
+//Thêm data trước node có giá trị val
+void addBefore(List& l, int data, int val){
+    if(isEmpty(l)){
+        cout <<"Danh sach rong\n";
+        return;
+    }
+    Node* curr = l.pHead;
+    while(curr != nullptr && curr->key != val){
+        curr = curr->next;
+    }
+    if(curr == nullptr){
+        return;
+    }
+    Node* newNode = createNode(data);
+    newNode->next = curr;
+    newNode->prev = curr->prev;   
+    if(curr->prev != nullptr){
+        curr->prev->next = newNode;
+    } else {
+        l.pHead = newNode;
+    }
+    curr->prev = newNode;
+}
+
+//Thêm data sau node có giá trị val
+void addAfter(List& l, int data, int val){
+    if(isEmpty(l)){
+        cout <<"Danh sach rong\n";
+        return;
+    }
+    Node* curr = l.pHead;
+    while(curr != nullptr && curr->key != val){
+        curr = curr->next;
+    }
+    if(curr == nullptr){
+        return;
+    }
+    Node* newNode = createNode(data);
+    newNode->prev = curr;
+    newNode->next = curr->next;   
+    if(curr->next != nullptr){
+        curr->next->prev = newNode;
+    } else {
+        l.pTail = newNode;
+    }
+    curr->next = newNode;
+}
+
+// Đếm số lượng nút trong danh sách
+int countElements(const List& list) {
+    int size = 0;
+    Node* current = list.pHead;
+    while (current != nullptr) {
+        size++;
+        current = current->next;
+    }
+    return size;
+}
+
+// Xóa phần tử trùng
+void removeDuplicates(List& list) {
+    if (isEmpty(list)) return;
+    Node* current = list.pHead;
+    while (current != nullptr) {
+        Node* runner = current->next;
+        while (runner != nullptr) {
+            if (runner->key == current->key) {
+                Node* toDelete = runner;
+                runner = runner->next;
+                removeKey(list, toDelete->key);
+            } else {
+                runner = runner->next;
+            }
+        }
+        current = current->next;
+    }
+}
+
+// Xóa tất cả phần tử có giá trị key
+void removeElements(List& list, int key) {
+    if (isEmpty(list)) return;
+    Node* current = list.pHead;
+    while (current != nullptr) {
+        if (current->key == key) {
+            Node* toDelete = current;
+            current = current->next;
+            removeKey(list, toDelete->key);
+        } else {
+            current = current->next;
+        }
+    }
 }
