@@ -14,6 +14,7 @@ struct Queue {
     Node* Tail;
 };
 
+//
 Queue* initializeQueue() {
     Queue* q = new Queue;
     q->Head = nullptr;
@@ -23,7 +24,7 @@ Queue* initializeQueue() {
 
 // Thêm vào cuối
 void enqueue(Queue& q, int key) {
-    Node* newNode = nullptr;
+    Node* newNode = new Node;
     newNode->key = key;
     newNode->pNext = nullptr;
     if(q.Head == nullptr){
@@ -45,8 +46,10 @@ int dequeue(Queue& q) {
     q.Head = q.Head->pNext;
     int val = tmp->key;
     delete tmp;
+    return val;
 }
 
+//
 bool isEmpty(Queue q){
     return q.Head == nullptr;
 }
@@ -64,14 +67,43 @@ int size(Queue q){
 
 //
 void printQueue(Queue q, ofstream& out) {
-
+    if (isEmpty(q)) {
+        out << "EMPTY";
+        return;
+    }
+    Node* tmp = q.Head;
+    while(tmp != nullptr){
+        out << tmp->key <<" ";
+        tmp = tmp->pNext;
+    }
 }
 
 int main() {
     ifstream input("input.txt");
     ofstream output("output.txt");
+    vector<string> ss;
+    string temp;
+    while (input >> temp) {
+        ss.push_back(temp);
+    }
     Queue* q = nullptr;
-
+    for (int i = 0; i < ss.size(); ++i) {
+        if (ss[i] == "init") {
+            q = initializeQueue();
+            printQueue(*q, output);
+        } else if (ss[i] == "enqueue") {
+            if (q != nullptr && i + 1 < ss.size()) {
+                enqueue(*q, stoi(ss[++i]));
+                printQueue(*q, output);
+            }
+        } else if (ss[i] == "dequeue") {
+            if (q != nullptr) {
+                dequeue(*q);
+                printQueue(*q, output);
+            }
+        }
+        output <<"\n";
+    }
     input.close();
     output.close();
     return 0;
