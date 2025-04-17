@@ -69,27 +69,27 @@ int main(int argc, char* argv[]) {
     }
 
     // Chọn thuật toán sắp xếp
-    if (algorithm == "selection_sort") {
+    if (algorithm == "selection-sort") {
         selection_sort(data);
-    } else if (algorithm == "bubble_sort") {
+    } else if (algorithm == "bubble-sort") {
         bubble_sort(data);
-    } else if (algorithm == "merge_sort") {
+    } else if (algorithm == "merge-sort") {
         merge_sort(data, 0, data.size() - 1); 
-    } else if (algorithm == "shell_sort") {
+    } else if (algorithm == "shell-sort") {
         shell_sort(data);
-    } else if (algorithm == "counting_sort") {
+    } else if (algorithm == "counting-sort") {
         counting_sort(data);
-    } else if (algorithm == "flash_sort") {
+    } else if (algorithm == "flash-sort") {
         flash_sort(data);
-    } else if (algorithm == "insertion_sort") {
+    } else if (algorithm == "insertion-sort") {
         insertion_sort(data);
-    } else if (algorithm == "shaker_sort") {
+    } else if (algorithm == "shaker-sort") {
         shaker_sort(data);
-    } else if (algorithm == "heap_sort") {
+    } else if (algorithm == "heap-sort") {
         heap_sort(data);
-    } else if (algorithm == "quick_sort") {
+    } else if (algorithm == "quick-sort") {
         quick_sort(data, 0, data.size()- 1);
-    } else if (algorithm == "radix_sort") {
+    } else if (algorithm == "radix-sort") {
         radix_sort(data);
     } else {
         cerr << "Thuat toan khong hop le!" << endl;
