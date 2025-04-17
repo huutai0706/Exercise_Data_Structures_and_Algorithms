@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-//Ham nhap du lieu cho mangmang
+
+//Ham nhap du lieu cho mang
 void scanf_arr(vector<int>& a){
     int x, n;
     cin >> n;
@@ -11,7 +12,7 @@ void scanf_arr(vector<int>& a){
     }
     return;
 }
-//Ham in ra gia tri cua mangmang
+//Ham in ra gia tri cua mang
 void prinf_arr(vector<int> a){
     for(int i = 0 ; i < a.size(); i++){
         cout << a[i] <<" ";
