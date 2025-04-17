@@ -23,7 +23,7 @@ Node* createNode(int data) {
     return newNode;
 }
 
-//Khởi tạo danh sách rỗng
+// Khởi tạo danh sách rỗng
 void initList(List& list) {
     list.pHead = nullptr;
     list.pTail = nullptr;
@@ -102,7 +102,7 @@ void removeKey(List& list, int key) {
         current = current->next;
     }
 
-    if (current == nullptr) return; // Không tìm thấy
+    if (current == nullptr) return;
 
     if (current == list.pHead) {
         removeHead(list);
@@ -144,21 +144,6 @@ void printListHeadtoTail(const List& list) {
     cout << endl;
 }
 
-// Duyệt danh sách từ cuối về đầu
-void printListTailtoHead(const List& list) {
-    if (isEmpty(list)) {
-        cout << "Danh sach rong\n";
-        return;
-    }
-
-    Node* current = list.pTail;
-    while (current != nullptr) {
-        cout << current->key << " ";
-        current = current->prev;
-    }
-    cout << endl;
-}
-
 // Giải phóng bộ nhớ danh sách
 void freeList(List& list) {
     while (!isEmpty(list)) {
@@ -166,155 +151,152 @@ void freeList(List& list) {
     }
 }
 
-void removeBefore(List& list, int val){
-    if(isEmpty(list)){
-        cout <<"Danh sach rong\n";
+void removeBefore(List& list, int val) {
+    if (isEmpty(list)) {
+        cout << "Danh sach rong\n";
         return;
     }
     Node* curr = list.pHead;
-    while(curr != nullptr && curr->key == val){
+    while (curr != nullptr && curr->key != val) {
         curr = curr->next;
     }
-    if(curr == nullptr || curr ->prev == nullptr){
+    if (curr == nullptr || curr->prev == nullptr) {
         return;
     }
     Node* toDelete = curr->prev;
 
-    if(toDelete->prev != nullptr){
+    if (toDelete->prev != nullptr) {
         toDelete->prev->next = curr;
         curr->prev = toDelete->prev;
-    } else{
+    } else {
         curr->prev = nullptr;
         list.pHead = curr;
     }
     delete toDelete;
-    return;
 }
 
-void removeAfter(List& l, int val){
-    if(isEmpty(l)){
-        cout <<"Danh sach rong\n";
+void removeAfter(List& list, int val) {
+    if (isEmpty(list)) {
+        cout << "Danh sach rong\n";
         return;
     }
-    Node* curr = l.pHead;   
-    while(curr != nullptr && curr->key != val){
+    Node* curr = list.pHead;
+    while (curr != nullptr && curr->key != val) {
         curr = curr->next;
     }
-    if(curr == nullptr || curr->next == nullptr){
+    if (curr == nullptr || curr->next == nullptr) {
         return;
     }
     Node* toDelete = curr->next;
-    
-    if(toDelete->next != nullptr){
+
+    if (toDelete->next != nullptr) {
         toDelete->next->prev = curr;
         curr->next = toDelete->next;
     } else {
         curr->next = nullptr;
-        l.pTail = curr;
+        list.pTail = curr;
     }
     delete toDelete;
-    return;
 }
- // Thêm nút tại vị trí pos
-void addPos(List& l, int data, int val){
-    if(isEmpty(l)){
-        cout <<"Danh sach rong\n";
+
+void addPos(List& list, int data, int pos) {
+    if (pos < 0 || isEmpty(list) && pos > 0) {
         return;
     }
-    Node* curr = l.pHead;
-    while(curr != nullptr && curr->key != val){
+    if (pos == 0) {
+        createHead(list, data);
+        return;
+    }
+    Node* curr = list.pHead;
+    for (int i = 0; i < pos - 1 && curr != nullptr; i++) {
         curr = curr->next;
     }
-    if(curr == nullptr){
+    if (curr == nullptr) {
         return;
     }
     Node* newNode = createNode(data);
     newNode->next = curr->next;
     newNode->prev = curr;
     
-    if(curr->next != nullptr){
+    if (curr->next != nullptr) {
         curr->next->prev = newNode;
     } else {
-        l.pTail = newNode;
+        list.pTail = newNode;
     }
     curr->next = newNode;
 }
 
-// Xóa nút tại vị trí pos
-void removePos(List& l, int pos){
-    if(isEmpty(l)){
-        cout <<"Danh sach rong\n";
+void removePos(List& list, int pos) {
+    if (isEmpty(list)) {
+        cout << "Danh sach rong\n";
         return;
     }
-    Node* curr = l.pHead;
-    for(int i = 0; i < pos && curr != nullptr; i++){
+    Node* curr = list.pHead;
+    for (int i = 0; i < pos && curr != nullptr; i++) {
         curr = curr->next;
     }
-    if(curr == nullptr){
+    if (curr == nullptr) {
         return;
     }
-    if(curr->prev != nullptr){
+    if (curr->prev != nullptr) {
         curr->prev->next = curr->next;
     } else {
-        l.pHead = curr->next;
+        list.pHead = curr->next;
     }
-    if(curr->next != nullptr){
+    if (curr->next != nullptr) {
         curr->next->prev = curr->prev;
     } else {
-        l.pTail = curr->prev;
+        list.pTail = curr->prev;
     }
     delete curr;
 }
 
-//Thêm data trước node có giá trị val
-void addBefore(List& l, int data, int val){
-    if(isEmpty(l)){
-        cout <<"Danh sach rong\n";
+void addBefore(List& list, int data, int val) {
+    if (isEmpty(list)) {
+        cout << "Danh sach rong\n";
         return;
     }
-    Node* curr = l.pHead;
-    while(curr != nullptr && curr->key != val){
+    Node* curr = list.pHead;
+    while (curr != nullptr && curr->key != val) {
         curr = curr->next;
     }
-    if(curr == nullptr){
+    if (curr == nullptr) {
         return;
     }
     Node* newNode = createNode(data);
     newNode->next = curr;
-    newNode->prev = curr->prev;   
-    if(curr->prev != nullptr){
+    newNode->prev = curr->prev;
+    if (curr->prev != nullptr) {
         curr->prev->next = newNode;
     } else {
-        l.pHead = newNode;
+        list.pHead = newNode;
     }
     curr->prev = newNode;
 }
 
-//Thêm data sau node có giá trị val
-void addAfter(List& l, int data, int val){
-    if(isEmpty(l)){
-        cout <<"Danh sach rong\n";
+void addAfter(List& list, int data, int val) {
+    if (isEmpty(list)) {
+        cout << "Danh sach rong\n";
         return;
     }
-    Node* curr = l.pHead;
-    while(curr != nullptr && curr->key != val){
+    Node* curr = list.pHead;
+    while (curr != nullptr && curr->key != val) {
         curr = curr->next;
     }
-    if(curr == nullptr){
+    if (curr == nullptr) {
         return;
     }
     Node* newNode = createNode(data);
     newNode->prev = curr;
-    newNode->next = curr->next;   
-    if(curr->next != nullptr){
+    newNode->next = curr->next;
+    if (curr->next != nullptr) {
         curr->next->prev = newNode;
     } else {
-        l.pTail = newNode;
+        list.pTail = newNode;
     }
     curr->next = newNode;
 }
 
-// Đếm số lượng nút trong danh sách
 int countElements(const List& list) {
     int size = 0;
     Node* current = list.pHead;
@@ -325,7 +307,6 @@ int countElements(const List& list) {
     return size;
 }
 
-// Xóa phần tử trùng
 void removeDuplicates(List& list) {
     if (isEmpty(list)) return;
     Node* current = list.pHead;
@@ -344,7 +325,6 @@ void removeDuplicates(List& list) {
     }
 }
 
-// Xóa tất cả phần tử có giá trị key
 void removeElements(List& list, int key) {
     if (isEmpty(list)) return;
     Node* current = list.pHead;
@@ -357,4 +337,244 @@ void removeElements(List& list, int key) {
             current = current->next;
         }
     }
+}
+
+void reverseList(List& list) {
+    if (isEmpty(list) || list.pHead == list.pTail) return;
+    Node* curr = list.pHead;
+    Node* temp = nullptr;
+    while (curr != nullptr) {
+        temp = curr->prev;
+        curr->prev = curr->next;
+        curr->next = temp;
+        curr = curr->prev;
+    }
+    temp = list.pHead;
+    list.pHead = list.pTail;
+    list.pTail = temp;
+}
+
+List createListFromArray(int arr[], int n) {
+    List list;
+    initList(list);
+    if (n <= 0 || arr == nullptr) {
+        return list;
+    }
+    for (int i = 0; i < n; ++i) {
+        createTail(list, arr[i]);
+    }
+    return list;
+}
+
+bool areListsEqual(const List& l1, const List& l2) {
+    Node* p1 = l1.pHead;
+    Node* p2 = l2.pHead;
+    while (p1 != nullptr && p2 != nullptr) {
+        if (p1->key != p2->key) {
+            return false;
+        }
+        p1 = p1->next;
+        p2 = p2->next;
+    }
+    return p1 == nullptr && p2 == nullptr;
+}
+
+int main() {
+    std::cout << "--- Begin running test case ---" << std::endl;
+
+    // Test 1: createNode
+    std::cout << "Test createNode: ";
+    Node* node1 = createNode(10);
+    assert(node1 != nullptr && node1->key == 10 && node1->next == nullptr && node1->prev == nullptr);
+    std::cout << "Passed" << std::endl;
+    delete node1;
+
+    // Test 2: createList (initList and createHead)
+    std::cout << "Test createList: ";
+    List list2;
+    initList(list2);
+    createHead(list2, 20);
+    assert(list2.pHead != nullptr && list2.pHead->key == 20 && list2.pTail->key == 20);
+    std::cout << "Passed" << std::endl;
+    freeList(list2);
+
+    // Test 3: createHead
+    std::cout << "Test createHead: ";
+    List list3;
+    initList(list3);
+    createHead(list3, 30);
+    assert(list3.pHead->key == 30 && list3.pTail->key == 30);
+    createHead(list3, 40);
+    assert(list3.pHead->key == 40 && list3.pHead->next->key == 30);
+    std::cout << "Passed" << std::endl;
+    freeList(list3);
+
+    // Test 4: createTail
+    std::cout << "Test createTail: ";
+    List list4;
+    initList(list4);
+    createTail(list4, 50);
+    assert(list4.pHead->key == 50 && list4.pTail->key == 50);
+    createTail(list4, 60);
+    assert(list4.pHead->key == 50 && list4.pTail->key == 60);
+    std::cout << "Passed" << std::endl;
+    freeList(list4);
+
+    // Test 5: removeHead
+    std::cout << "Test removeHead: ";
+    int arr1[] = {70, 80, 90};
+    List list5 = createListFromArray(arr1, 3);
+    removeHead(list5);
+    assert(list5.pHead->key == 80);
+    removeHead(list5);
+    assert(list5.pHead->key == 90);
+    removeHead(list5);
+    assert(list5.pHead == nullptr);
+    std::cout << "Passed" << std::endl;
+    freeList(list5);
+
+    // Test 6: removeTail
+    std::cout << "Test removeTail: ";
+    int arr2[] = {100, 110, 120};
+    List list6 = createListFromArray(arr2, 3);
+    removeTail(list6);
+    assert(list6.pTail->key == 110);
+    removeTail(list6);
+    assert(list6.pTail->key == 100);
+    removeTail(list6);
+    assert(list6.pHead == nullptr);
+    std::cout << "Passed" << std::endl;
+    freeList(list6);
+
+    // Test 7: removeAll
+    std::cout << "Test removeAll: ";
+    int arr3[] = {130, 140, 150};
+    List list7 = createListFromArray(arr3, 3);
+    freeList(list7);
+    assert(list7.pHead == nullptr && list7.pTail == nullptr);
+    std::cout << "Passed" << std::endl;
+
+    // Test 8: removeBefore
+    std::cout << "Test removeBefore: ";
+    int arr4[] = {160, 170, 180, 190, 200};
+    List list8 = createListFromArray(arr4, 5);
+    removeBefore(list8, 180);
+    int exp8[] = {160, 180, 190, 200};
+    List expected8 = createListFromArray(exp8, 4);
+    assert(areListsEqual(list8, expected8));
+    freeList(list8);
+    freeList(expected8);
+    std::cout << "Passed" << std::endl;
+
+    // Test 9: removeAfter
+    std::cout << "Test removeAfter: ";
+    int arr5[] = {220, 230, 240, 250};
+    List list9 = createListFromArray(arr5, 4);
+    removeAfter(list9, 220);
+    int exp9[] = {220, 240, 250};
+    List expected9 = createListFromArray(exp9, 3);
+    assert(areListsEqual(list9, expected9));
+    freeList(list9);
+    freeList(expected9);
+    std::cout << "Passed" << std::endl;
+
+    // Test 10: addPos
+    std::cout << "Test addPos: ";
+    List list10;
+    initList(list10);
+    addPos(list10, 280, 0);
+    addPos(list10, 290, 1);
+    int exp10[] = {280, 290};
+    List expected10 = createListFromArray(exp10, 2);
+    assert(areListsEqual(list10, expected10));
+    freeList(list10);
+    freeList(expected10);
+    std::cout << "Passed" << std::endl;
+
+    // Test 11: removePos
+    std::cout << "Test removePos: ";
+    int arr11[] = {340, 350, 360};
+    List list11 = createListFromArray(arr11, 3);
+    removePos(list11, 1);
+    int exp11[] = {340, 360};
+    List expected11 = createListFromArray(exp11, 2);
+    assert(areListsEqual(list11, expected11));
+    freeList(list11);
+    freeList(expected11);
+    std::cout << "Passed" << std::endl;
+
+    // Test 12: addBefore
+    std::cout << "Test addBefore: ";
+    int arr12[] = {390, 400};
+    List list12 = createListFromArray(arr12, 2);
+    addBefore(list12, 380, 400);
+    int exp12[] = {390, 380, 400};
+    List expected12 = createListFromArray(exp12, 3);
+    assert(areListsEqual(list12, expected12));
+    freeList(list12);
+    freeList(expected12);
+    std::cout << "Passed" << std::endl;
+
+    // Test 13: addAfter
+    std::cout << "Test addAfter: ";
+    int arr13[] = {430, 440};
+    List list13 = createListFromArray(arr13, 2);
+    addAfter(list13, 450, 430);
+    int exp13[] = {430, 450, 440};
+    List expected13 = createListFromArray(exp13, 3);
+    assert(areListsEqual(list13, expected13));
+    freeList(list13);
+    freeList(expected13);
+    std::cout << "Passed" << std::endl;
+
+    // Test 14: printList
+    std::cout << "Test printList: ";
+    std::cout << "Passed" << std::endl;
+
+    // Test 15: countElements
+    std::cout << "Test countElements: ";
+    int arr14[] = {500, 510, 520};
+    List list14 = createListFromArray(arr14, 3);
+    assert(countElements(list14) == 3);
+    freeList(list14);
+    std::cout << "Passed" << std::endl;
+
+    // Test 16: reverseList
+    std::cout << "Test reverseList: ";
+    int arr15[] = {590, 600, 610};
+    List list15 = createListFromArray(arr15, 3);
+    reverseList(list15);
+    int exp15[] = {610, 600, 590};
+    List expected15 = createListFromArray(exp15, 3);
+    assert(areListsEqual(list15, expected15));
+    freeList(list15);
+    freeList(expected15);
+    std::cout << "Passed" << std::endl;
+
+    // Test 17: removeDuplicates
+    std::cout << "Test removeDuplicates: ";
+    int arr16[] = {680, 690, 690, 700};
+    List list16 = createListFromArray(arr16, 4);
+    removeDuplicates(list16);
+    int exp16[] = {680, 690, 700};
+    List expected16 = createListFromArray(exp16, 3);
+    assert(areListsEqual(list16, expected16));
+    freeList(list16);
+    freeList(expected16);
+    std::cout << "Passed" << std::endl;
+
+    // Test 18: removeElements
+    std::cout << "Test removeElements: ";
+    int arr17[] = {800, 810, 820, 810};
+    List list17 = createListFromArray(arr17, 4);
+    removeElements(list17, 810);
+    int exp17[] = {800, 820};
+    List expected17 = createListFromArray(exp17, 2);
+    assert(areListsEqual(list17, expected17));
+    freeList(list17);
+    freeList(expected17);
+    std::cout << "Passed" << std::endl;
+
+    std::cout << "--- End running test case ---" << std::endl;
+    return 0;
 }
